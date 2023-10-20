@@ -1,27 +1,23 @@
 const express = require("express");
 const app = express()
 const mongoose = require('mongoose')
-const cors = require('cors')
+const cors = require('cors');
 const port = 3000
-// const port = 27017
 require('dotenv').config();
 
 const url = process.env.MONGODB_URL
-
 
 app.use(express.json());
 
 app.use(cors());
 
-//----------------------admin route------------------------
+app.use("/uploads",express.static("uploads"))
 
-// const adminRoutes = require("./src/routes/adminRoutes")
-// app.use("/",adminRoutes);
 
 //-------------------student route-------------------------
 
-// const studentRoutes = require("./src/routes/studentRoutes")
-// app.use("/",studentRoutes)
+const userRoute = require("./src/routes/userRoute")
+app.use("/",userRoute)
 
 
 
