@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 
+
+
+
 const One = () => {
 
     const [file, setFile] = useState("");
     const [pdf,setpdf] = useState([])
+   
 
     const submitFile = async (e) => {
         e.preventDefault()
@@ -23,7 +27,7 @@ const One = () => {
     }
 
 
-    //--------------------------grt pdf --------------------------
+    //--------------------------get pdf--------------------------
 
     useEffect(()=>{
         const getPdfFile = async ()=>{
