@@ -4,22 +4,33 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import Button from '@mui/material/Button';
 import { PDFDocument } from 'pdf-lib';
 import axios from "axios";
+import Grid from "@mui/material/Grid";
+import "../Pages/homeStyle.css"
+import { useNavigate } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const Home = () => {
+  //---------------------------hooks-------------------------------
+
   const [file, setFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [selectedPages, setSelectedPages] = useState([]);
+  const navigate = useNavigate();
 
-  const handleCahnge = (e) => {
+  //---------------------------pdf selection--------------------
+
+  const handleChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === "application/pdf") {
       setFile(selectedFile);
+
     } else {
-      console.log("Please select a valid PDF file.");
+      alert("Please select a valid PDF file.");
     }
   };
+
+  //------------------------page extraction when pdf selection-----------
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -53,6 +64,7 @@ const Home = () => {
           formData.append('file', new Blob([newPdfBytes], { type: 'application/pdf' }));
   
           const response = await axios.post('http://localhost:3000/upload/pdf', formData, {
+
             headers: { 'Content-Type': 'multipart/form-data' },
           });
   
@@ -62,51 +74,72 @@ const Home = () => {
           console.log(response.data);
         };
         reader.readAsArrayBuffer(file);
+      }else{
+        const formData = new FormData()
+        formData.append("file", file)
+      
+
+        const response = await axios.post("http://localhost:3000/upload/pdf",formData,{
+            headers:{"Content-Type":"multipart/form-data"},
+        })
+        if (response.data.status === "success") {
+          alert(response.data.message);
       }
+      }
+     
     } catch (error) {
       console.log('Error:', error);
     }
   };
 
+  let buttonText = selectedPages.length > 0 ? "Generate New PDF" : "Upload";
 
   return (
-    <div className="input-div">
-      <h3>File Upload</h3>
-      <br />
-      <input type="file" accept=".pdf" onChange={handleCahnge} />
-      <br />
-      <br />
 
-      <div id="pdf-container">
-        {file && (
-          <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
-            {Array.from(new Array(numPages), (el, index) => (
-              <div key={`page_${index + 1}`}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedPages.includes(index + 1)}
-                    onChange={() => pageSelection(index + 1)}
+    <div className="home-div">
+    <Grid container spacing={2} justifyContent="center">
+    <Grid item xs={12} sm={6}>
+      <div >
+        <h1>File Upload</h1>
+        <br />
+        <input type="file" accept=".pdf" onChange={handleChange} />
+        <br />
+        <br />
+
+        <div >
+          {file && (
+            <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
+              {Array.from(new Array(numPages), (el, index) => (
+                <div key={`page_${index + 1}`}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedPages.includes(index + 1)}
+                      onChange={() => pageSelection(index + 1)}
+                    />
+                    Page {index + 1}
+                  </label>
+
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
                   />
-                  Page {index + 1}
-                </label>
-                <Page
-                  key={`page_${index + 1}`}
-                  pageNumber={index + 1}
-                  renderTextLayer={false}
-                  renderAnnotationLayer={false}
-                />
-              </div>
-            ))}
-          </Document>
-        )}
-      </div>
+                </div>
+              ))}
+            </Document>
+          )}
+        </div>
 
-      <Button variant="primary">Upload</Button>
-      <Button variant="primary" onClick={newlyCreatedPdf}>
-        Generate New PDF
-      </Button>
-    </div>
+        <Button variant="contained" color="success" onClick={newlyCreatedPdf}>
+          {buttonText}
+        </Button>
+        <Button  onClick={()=>navigate("/view")}>View Pdf Collection</Button>
+      </div>
+    </Grid>
+  </Grid>
+  </div>
   );
 };
 

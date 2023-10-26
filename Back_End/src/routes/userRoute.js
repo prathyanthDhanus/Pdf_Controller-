@@ -9,6 +9,6 @@ const router = express.Router();
 router.post("/upload/pdf",upload.single("file"),tryatch(user.uploadPdf));
 
 router.get("/getfile/pdf",tryatch(user.getPdf));
-
+router.get("/getfile/pdf/:id",tryatch(user.getPdfbyId))
 
 module.exports = router

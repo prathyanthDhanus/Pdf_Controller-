@@ -1,8 +1,8 @@
-import { useState } from 'react'
+
 import Home from './Pages/home'
-import CopyHome from './Pages/copyHome'
+import ViewSinglePdf from './Pages/viewsinglepdf'
 import {BrowserRouter, Routes,Route  } from 'react-router-dom'
-import One from './Pages/one'
+import View from './Pages/view'
 import './App.css'
 
 
@@ -17,8 +17,8 @@ function App() {
 <BrowserRouter>
 <Routes>
 <Route path='/' element={<Home />}/>
-<Route path='/copy' element={<CopyHome />}/>
-<Route path='/one' element={<One />}/>
+<Route path='/view' element={<View />}/>
+<Route path='/view/single/pdf/:id' element={<ViewSinglePdf />}/>
 
 </Routes>
 </BrowserRouter>
