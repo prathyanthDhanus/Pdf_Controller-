@@ -1,0 +1,36 @@
+.home-div{
+    background-color: rgb(162, 131, 176);
+   margin-top: 2rem;
+   display: grid;
+   align-items: center;
+   justify-content: center;
+   width: 50rem;
+
+}
+@media (max-width: 768px) {
+    /* Apply styles for screens with a maximum width of 768px */
+    .home-div {
+      margin-top: 1rem;
+      padding: 1rem;
+      text-align: center;
+      width: 100rem;
+    }
+    .home-document{
+        margin-top: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+  }
+
+  .home-div2{
+    margin-bottom: 2rem;
+    
+
+  }
+
+.home-document{
+    padding: 1rem;
+    width:rem;
+    background-color: chartreuse;
+
+}

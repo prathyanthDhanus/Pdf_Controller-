@@ -96,21 +96,21 @@ const Home = () => {
 
   return (
 
-    <div className="home-div">
+   <>
     <Grid container spacing={2} justifyContent="center">
     <Grid item xs={12} sm={6}>
-      <div >
+      <div className="home-div" >
         <h1>File Upload</h1>
         <br />
         <input type="file" accept=".pdf" onChange={handleChange} />
         <br />
         <br />
 
-        <div >
+        <div className="home-div2" >
           {file && (
             <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
-                <div key={`page_${index + 1}`}>
+                <div key={`page_${index + 1}`} className="home-document">
                   <label>
                     <input
                       type="checkbox"
@@ -125,6 +125,7 @@ const Home = () => {
                     pageNumber={index + 1}
                     renderTextLayer={false}
                     renderAnnotationLayer={false}
+                    
                   />
                 </div>
               ))}
@@ -139,7 +140,7 @@ const Home = () => {
       </div>
     </Grid>
   </Grid>
-  </div>
+  </>
   );
 };
 
